@@ -71,10 +71,22 @@ class singletemplate(Resource):
         template_data=Template.objects(template_name=template_data).first()
         return jsonify(template_data)
 
+class Updatesingletemplate(Resource):
+    @jwt_required()
+    def put(self,template_data: str):
+        get_data=(request.data).decode('utf-8')
+        import json
+        data_dict=json.loads(get_data)
+        subject_data=data_dict["subject"]
+        template_data=Template.objects(template_name=template_data).first()
+        template_data.update(subject=subject_data)
+        return "Updated Successfully..!"
+
 class Deletetemplate(Resource):
     @jwt_required()
-    def post(self,template_data: str):
+    def delete(self,template_data: str):
         template_data=Template.objects(template_name=template_data).first()
         template_data.delete()
         return "Deleted SuccessFully...!"
+
         
